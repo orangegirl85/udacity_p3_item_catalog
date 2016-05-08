@@ -14,7 +14,7 @@
 
 2. Clone the `fullstack-nanodegree-vm repository`
 
-3. Clone https://github.com/orangegirl85/udacity_p3_catalog_item repository
+3. Clone https://github.com/orangegirl85/udacity_p3_item_catalog repository
    into fullstack/vagrant/catalog
 
 
