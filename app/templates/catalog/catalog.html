@@ -26,11 +26,10 @@
             {% endif %}
         {% endwith %}
     </div>
-
     <div class="row padding-top padding-bottom">
         <div class="col-md-1"></div>
         <div class="col-md-10 padding-none">
-            <a href="{{url_for('newCategory')}}">
+            <a href="{{url_for('catalog.newCategory')}}">
                 <button class="btn btn-default" id="new-restaurant">
                     <span aria-hidden="true"></span>Add Category
                 </button>
@@ -39,7 +38,7 @@
         <div class="col-md-1"></div>
     </div>
     {% for category in catalog %}
-        <a href = "{{url_for('showItems', category_id = category.id)}}">
+        <a href = "{{url_for('catalog.showItems', category_id = category.id)}}">
             <div class="row">
                 <div class="col-md-1"></div>
                     <div class="col-md-10 restaurant-list">
@@ -49,4 +48,6 @@
             </div>
         </a>
     {% endfor %}
+
+
 {% endblock %}

@@ -30,17 +30,17 @@
 
 `cd /vagrant/catalog`
 
-3. Setup database:
+3. Run app in order to set database:
 
-`python database_setup.py`
+`python run.py`
 
 4. Populate database
 
 `python lotsofitems.py`
 
-5. Run app
+5. Run app again
 
-`python application.py`
+`python run.py`
 
 
 
@@ -50,6 +50,7 @@
 
 2. Authentication and Authorization: OAuth - Udacity course
 
+3. How To Structure Large Flask Applications - https://www.digitalocean.com/community/tutorials/how-to-structure-large-flask-applications
 
 
 # Extras
@@ -57,11 +58,43 @@
 1. Project Structure
 ```
 /catalog
+    /app
+        /auth
+            __init__.py
+            controllers.py
+            models.py
+        /catalog
+            __init__.py
+            api.py
+            controllers.py
+            models.py
+        /items
+            __init__.py
+            controllers.py
+            models.py
+        /static
+            styles.css
+        /templates
+            /catalog
+                catalog.html
+                deletecategory.html
+                editcategory.html
+                newcategory.html
+            /items
+                deleteitem.html
+                edititem.html
+                items.html
+                newitem.html
+            404.html
+            header.html
+            main.html
+        __init__.py
+    /config
+        __init__.py
     .gitignore
-    Readme.md
-    database_setup.py
     lotsofitems.py
-    application.py
+    README.md
+    run.py
 
 ```
 
