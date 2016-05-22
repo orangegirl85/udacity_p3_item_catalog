@@ -2,7 +2,7 @@ import os
 
 # Host and Port of the application
 HOST = '0.0.0.0'
-PORT = 8080
+PORT = 8000
 
 # Statement for enabling the development environment
 DEBUG = True

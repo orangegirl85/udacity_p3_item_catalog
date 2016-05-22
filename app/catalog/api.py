@@ -1,5 +1,5 @@
 # Import flask dependencies
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 # Import the database session from the main app module
 from app import session
