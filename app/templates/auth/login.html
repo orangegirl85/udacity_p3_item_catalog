@@ -9,7 +9,7 @@
     <div id="signinButton">
         <span class="g-signin"
             data-scope="openid profile email"
-            data-clientid="{{CLIENT_ID}}"
+            data-clientid="{{GOOGLE_CLIENT_ID}}"
             data-redirecturi="postmessage"
             data-accesstype="offline"
             data-cookiepolicy="single_host_origin"
@@ -53,11 +53,9 @@
 <script>
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '498939346983570',
-    cookie     : true,  // enable cookies to allow the server to access
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
+    appId      : '{{FACEBOOK_APP_ID}}',
+    xfbml      : true,
+    version    : 'v2.6'
   });
 
   };
@@ -81,7 +79,7 @@
       console.log('Successful login for: ' + response.name);
      $.ajax({
       type: 'POST',
-      url: '/fbconnect?state={{STATE}}',
+      url: '/auth/fbconnect?state={{STATE}}',
       processData: false,
       data: access_token,
       contentType: 'application/octet-stream; charset=utf-8',
@@ -90,7 +88,7 @@
         if (result) {
           $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
          setTimeout(function() {
-          window.location.href = "/restaurant";
+          window.location.href = "/catalog";
          }, 4000);
 
 
