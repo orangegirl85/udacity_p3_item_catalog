@@ -4,7 +4,7 @@ from flask import Blueprint, request, render_template, \
 
 # Import the database session from the main app module
 from app import session
-from sqlalchemy import asc
+from sqlalchemy import asc, desc
 
 # Import module models
 from app.catalog.models import Category
@@ -18,7 +18,12 @@ catalogBlueprint = Blueprint('catalog', __name__, url_prefix='/catalog')
 @catalogBlueprint.route('/', methods=['GET'])
 def showCatalog():
     catalog = session.query(Category).order_by(asc(Category.name))
-    return render_template('catalog/catalog.html', catalog=catalog)
+    latestItems = session.query(Item.name, Item.id, Category.name, Category.id).join(Category).order_by(desc(Item.id)).limit(10)
+
+    latest = []
+    for (itemName, itemId, categoryName, categoryId) in latestItems:
+        latest.append({'item_name':itemName, 'category_name': categoryName, 'item_id':itemId, 'category_id': categoryId})
+    return render_template('catalog/catalog.html', catalog=catalog, latest=latest)
 
 
 @catalogBlueprint.route('/new', methods=['GET', 'POST'])
@@ -37,6 +42,7 @@ def newCategory():
 def editCategory(category_id):
     editedCategory = session.query(Category).filter_by(id=category_id).one()
     if request.method == 'POST':
+        print 'post'
         if request.form['name']:
             editedCategory.name = request.form['name']
             flash('Category Successfully Edited %s' % editedCategory.name)
@@ -59,6 +65,7 @@ def deleteCategory(category_id):
 
 @catalogBlueprint.route('/catalog/<int:category_id>/items')
 def showItems(category_id):
+    catalog = session.query(Category).order_by(asc(Category.name))
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(category_id=category_id).all()
-    return render_template('items/items.html', items=items, category=category)
+    return render_template('items/items.html', catalog=catalog, items=items, category=category)
