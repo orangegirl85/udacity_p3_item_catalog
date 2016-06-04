@@ -4,11 +4,13 @@
     <div class="container-fluid" >
         <div class="row equal">
             <div class="col-md-3 border-right">
+                {% if 'username' in session %}
                 <a href="{{url_for('catalog.newCategory')}}">
                     <button class="btn btn-success" id="new-category">
                         <span aria-hidden="true"></span>Add Category
                     </button>
                 </a>
+                {% endif %}
                 <h3>Categories</h3>
                 {% for category in catalog %}
                     <a href="{{url_for('catalog.showItems', category_id = category.id)}}">
@@ -19,9 +21,13 @@
             <div class="col-md-9" >
                 <div class="pl-10">
                     <h3>{{ category.name }} ({{items|length}} items)</h3>
+
+                    {% if 'username' in session %}
                     <a href="{{url_for('catalog.editCategory', category_id=category.id)}}">Edit</a> |
                     <a href="{{url_for('catalog.deleteCategory', category_id=category.id)}}">Delete</a>
                     <br/><br/>
+                    {% endif %}
+
 					{% if items !=[] %}
                         {% for i in items %}
                             <a href="{{url_for('item.showItem', item_id=i.id)}}">{{i.name}}</a>

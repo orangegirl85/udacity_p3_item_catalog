@@ -1,6 +1,5 @@
 # Import flask and template operators
-from flask import Flask, render_template
-
+from flask import Flask, render_template, request, session as app_session, abort
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -35,6 +34,27 @@ session = DBSession()
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
+
+@app.errorhandler(403)
+def forbidden(error):
+    return render_template('403.html'), 403
+
+@app.before_request
+def csrf_protect():
+    if request.method == "POST":
+        token = app_session.pop('_csrf_token', None)
+        tokenFormOrAuth = request.form.get('_csrf_token')
+        if not tokenFormOrAuth:
+            tokenFormOrAuth = request.args.get('_csrf_token')
+        if not token or token != tokenFormOrAuth:
+            abort(403)
+
+def generate_csrf_token():
+    if '_csrf_token' not in app_session:
+        app_session['_csrf_token'] = app.config['CSRF_SESSION_KEY']
+    return app_session['_csrf_token']
+
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 # Import a module / component using its blueprint handler variable
 from auth.controllers import auth as auth_module

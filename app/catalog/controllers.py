@@ -1,6 +1,6 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
-    flash, redirect, url_for
+    flash, redirect, url_for, session as login_session
 
 # Import the database session from the main app module
 from app import session
@@ -28,32 +28,50 @@ def showCatalog():
 
 @catalogBlueprint.route('/new', methods=['GET', 'POST'])
 def newCategory():
+    if 'username' not in login_session:
+        return redirect(url_for('auth.showLogin'))
     if request.method == 'POST':
-        newCategory = Category(name=request.form['name'])
-        session.add(newCategory)
-        flash('New Category %s Successfully Created' % newCategory.name)
-        session.commit()
-        return redirect(url_for('catalog.showCatalog'))
+        if request.form['name']:
+            newCategory = Category(name=request.form['name'])
+            session.add(newCategory)
+            flash('New Category %s Successfully Created' % newCategory.name)
+            session.commit()
+            return redirect(url_for('catalog.showCatalog'))
+        else:
+            flash('Name is mandatory')
+            return render_template('catalog/newcategory.html')
     else:
         return render_template('catalog/newcategory.html')
 
 
 @catalogBlueprint.route('/<int:category_id>/edit', methods=['GET', 'POST'])
 def editCategory(category_id):
+    if 'username' not in login_session:
+        return redirect(url_for('auth.showLogin'))
     editedCategory = session.query(Category).filter_by(id=category_id).one()
+    if editedCategory.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized to edit this category. Please create your own category in order to edit.');}</script><body onload='myFunction()''>"
+
     if request.method == 'POST':
-        print 'post'
         if request.form['name']:
             editedCategory.name = request.form['name']
             flash('Category Successfully Edited %s' % editedCategory.name)
             return redirect(url_for('catalog.showCatalog'))
+        else:
+            flash('Name is mandatory')
+            return render_template('catalog/editcategory.html', category=editedCategory)
     else:
         return render_template('catalog/editcategory.html', category=editedCategory)
 
 
 @catalogBlueprint.route('/<int:category_id>/delete', methods=['GET', 'POST'])
 def deleteCategory(category_id):
+    if 'username' not in login_session:
+        return redirect(url_for('auth.showLogin'))
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    if categoryToDelete.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized to delete this category. Please create your own category in order to delete.');}</script><body onload='myFunction()''>"
+
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
