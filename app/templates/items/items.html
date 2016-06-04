@@ -13,7 +13,7 @@
                 {% endif %}
                 <h3>Categories</h3>
                 {% for category in catalog %}
-                    <a href="{{url_for('catalog.showItems', category_id = category.id)}}">
+                    <a href="{{url_for('catalog.showItems', category_name = category.name)}}">
                         {{category.name}}
                     </a>
                 {% endfor %}
@@ -23,14 +23,14 @@
                     <h3>{{ category.name }} ({{items|length}} items)</h3>
 
                     {% if 'username' in session %}
-                    <a href="{{url_for('catalog.editCategory', category_id=category.id)}}">Edit</a> |
-                    <a href="{{url_for('catalog.deleteCategory', category_id=category.id)}}">Delete</a>
+                    <a href="{{url_for('catalog.editCategory', category_name=category.name)}}">Edit</a> |
+                    <a href="{{url_for('catalog.deleteCategory', category_name=category.name)}}">Delete</a>
                     <br/><br/>
                     {% endif %}
 
 					{% if items !=[] %}
                         {% for i in items %}
-                            <a href="{{url_for('item.showItem', item_id=i.id)}}">{{i.name}}</a>
+                            <a href="{{url_for('catalog.showItem',  category_name=i.category_name, item_name=i.name)}}">{{i.name}}</a>
                             <br/>
                         {% endfor %}
 	                {% endif %}

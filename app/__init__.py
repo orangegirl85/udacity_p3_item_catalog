@@ -30,7 +30,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-# Sample HTTP error handling
+# HTTP error handling
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
@@ -39,6 +39,7 @@ def not_found(error):
 def forbidden(error):
     return render_template('403.html'), 403
 
+# Protect against *Cross-site Request Forgery (CSRF)*
 @app.before_request
 def csrf_protect():
     if request.method == "POST":

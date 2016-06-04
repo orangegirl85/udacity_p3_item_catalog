@@ -32,7 +32,8 @@ FACEBOOK_APP_ID = json.loads(open(abs_file_path_fb, 'r').read())['web']['app_id'
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in xrange(32))
     login_session['state'] = state
-    return render_template('auth/login.html', STATE=state, GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID, FACEBOOK_APP_ID=FACEBOOK_APP_ID)
+    return render_template('auth/login.html', STATE=state, GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID,
+                           FACEBOOK_APP_ID=FACEBOOK_APP_ID)
 
 
 @auth.route('/gconnect', methods=['POST'])
@@ -68,7 +69,7 @@ def gconnect():
     login_session['gplus_id'] = gplus_id
 
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
-    params = {'access_token': credentials.access_token, 'alt':'json'}
+    params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
     data = json.loads(answer.text)
 
@@ -112,7 +113,6 @@ def fbconnect():
     # strip expire tag from access token
     token = result.split("&")[0]
 
-
     url = 'https://graph.facebook.com/v2.4/me?%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -154,7 +154,6 @@ def fbconnect():
     return output
 
 
-
 @auth.route('/disconnect')
 def disconnect():
     if 'provider' in login_session:
@@ -188,16 +187,15 @@ def gdisconnect():
     if result['status'] == '200':
         return error_handler('Successfully disconnected.', 200)
 
+
 @auth.route('/fbdisconnect')
 def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     h.request(url, 'DELETE')[1]
-
-
 
 
 def error_handler(message, code):
@@ -208,7 +206,7 @@ def error_handler(message, code):
 
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
-                   'email'], picture=login_session['picture'])
+        'email'], picture=login_session['picture'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()

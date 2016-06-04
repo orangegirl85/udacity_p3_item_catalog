@@ -8,8 +8,8 @@
 
 	   <p>{{item.description}}</p>
        {% if 'username' in session %}
-       <a href="{{url_for('item.editItem', item_id=item.id ) }}">Edit</a> |
-       <a href="{{url_for('item.deleteItem', item_id=item.id ) }}">Delete</a>
+       <a href="{{url_for('item.editItem', item_name=item.name ) }}">Edit</a> |
+       <a href="{{url_for('item.deleteItem', item_name=item.name ) }}">Delete</a>
        {% endif %}
    </div>
 

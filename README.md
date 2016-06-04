@@ -3,7 +3,7 @@
 
     * This is an application that provides a list of items within a variety of categories as well as
     provide a user registration and authentication system. Registered users will have the ability to post, edit
-    and delete their own items.
+    and delete their own categories and items.
 
     * Used technologies: Flask, SQLAlchemy, Facebook, Google+ Authentication
 
@@ -42,6 +42,10 @@
 
 `python run.py`
 
+6. Go to: http://localhost:8000
+
+7. Api endpoint: http://localhost:8000/catalog.json
+
 
 
 # Resources
@@ -51,6 +55,8 @@
 2. Authentication and Authorization: OAuth - Udacity course
 
 3. How To Structure Large Flask Applications - https://www.digitalocean.com/community/tutorials/how-to-structure-large-flask-applications
+
+4. Bootstrap starter template http://getbootstrap.com/examples/starter-template/ - used for header
 
 
 # Extras
@@ -75,6 +81,8 @@
         /static
             styles.css
         /templates
+            /auth
+                login.html
             /catalog
                 catalog.html
                 deletecategory.html
@@ -83,14 +91,18 @@
             /items
                 deleteitem.html
                 edititem.html
+                item.html
                 items.html
                 newitem.html
+            403.html
             404.html
             header.html
             main.html
         __init__.py
     /config
         __init__.py
+        client_secret_facebook.json
+        client_secret_google.json
     .gitignore
     lotsofitems.py
     README.md
@@ -98,3 +110,6 @@
 
 ```
 
+2. Built a structured application inspired by digitalocean tutorial.
+
+3. Added protection against CSRF requests.

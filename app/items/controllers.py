@@ -16,11 +16,6 @@ itemBlueprint = Blueprint('item', __name__, url_prefix='/catalog')
 
 
 # Set the route and accepted methods
-@itemBlueprint.route('/item/<int:item_id>/show', methods=['GET'])
-def showItem(item_id):
-    item = session.query(Item).filter_by(id=item_id).one()
-    return render_template('items/item.html', item=item)
-
 
 @itemBlueprint.route('/newItem', methods=['GET', 'POST'])
 def newItem():
@@ -31,7 +26,8 @@ def newItem():
         if request.form['name'] and request.form['description'] and request.form['category_id']:
             newItem = Item(name=request.form['name'],
                            description=request.form['description'],
-                           category_id=request.form['category_id'])
+                           category_id=request.form['category_id'],
+                           user_id=login_session['user_id'])
             session.add(newItem)
             session.commit()
             flash('New Item %s Successfully Created' % (newItem.name))
@@ -43,13 +39,12 @@ def newItem():
         return render_template('items/newitem.html', categories=categories)
 
 
-@itemBlueprint.route('/item/<int:item_id>/edit', methods=['GET', 'POST'])
-def editItem(item_id):
+@itemBlueprint.route('/item/<item_name>/edit', methods=['GET', 'POST'])
+def editItem(item_name):
     if 'username' not in login_session:
         return redirect(url_for('auth.showLogin'))
     categories = session.query(Category).order_by(asc(Category.name))
-    editedItem = session.query(Item).filter_by(id=item_id).one()
-
+    editedItem = session.query(Item).filter_by(name=item_name).one()
     if editedItem.user_id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to edit this item. Please create your own item in order to edit.');}</script><body onload='myFunction()''>"
 
@@ -69,11 +64,11 @@ def editItem(item_id):
         return render_template('items/edititem.html', item=editedItem, categories=categories)
 
 
-@itemBlueprint.route('/item/<int:item_id>/delete', methods=['GET', 'POST'])
-def deleteItem(item_id):
+@itemBlueprint.route('/item/<item_name>/delete', methods=['GET', 'POST'])
+def deleteItem(item_name):
     if 'username' not in login_session:
         return redirect(url_for('auth.showLogin'))
-    itemToDelete = session.query(Item).filter_by(id=item_id).one()
+    itemToDelete = session.query(Item).filter_by(name=item_name).one()
 
     if itemToDelete.user_id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to delete this item. Please create your own item in order to delete.');}</script><body onload='myFunction()''>"

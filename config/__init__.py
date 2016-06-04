@@ -16,9 +16,6 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'catalogitems.db
 # Secret key for signing cookies
 SECRET_KEY = "catalog_secret"
 
-# Enable protection agains *Cross-site Request Forgery (CSRF)*
-CSRF_ENABLED = True
-
 # Use a secure, unique and absolutely secret key for
 # signing the data.
 CSRF_SESSION_KEY = "catalog_secret_csrf"
