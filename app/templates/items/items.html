@@ -30,7 +30,7 @@
 
 					{% if items !=[] %}
                         {% for i in items %}
-                            <a href="{{url_for('catalog.showItem',  category_name=i.category_name, item_name=i.name)}}">{{i.name}}</a>
+                            <a href="{{url_for('catalog.showItem',  category_name=category.name, item_name=i.name)}}">{{i.name}}</a>
                             <br/>
                         {% endfor %}
 	                {% endif %}

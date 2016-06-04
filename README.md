@@ -5,7 +5,7 @@
     provide a user registration and authentication system. Registered users will have the ability to post, edit
     and delete their own categories and items.
 
-    * Used technologies: Flask, SQLAlchemy, Facebook, Google+ Authentication
+    * Used technologies: Flask, SQLAlchemy, Facebook, Google+ Authentication, Bootstrap for CSS
 
 
 # Prerequisites
