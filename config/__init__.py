@@ -11,7 +11,7 @@ DEBUG = True
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Define the database URI
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'catalogitems.db')
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://catalog:catalog123!@localhost/catalog'
 
 # Secret key for signing cookies
 SECRET_KEY = "catalog_secret"
